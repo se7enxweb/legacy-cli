@@ -219,7 +219,7 @@ class Relationships implements InputConfiguringInterface
     }
 
     /**
-     * Returns whether the database supports MariaDB command names (added in MariaDB 10.4).
+     * Returns whether the database supports MariaDB command names (added in MariaDB 10.4.6).
      *
      * See: https://jira.mariadb.org/browse/MDEV-21303
      *
@@ -230,7 +230,7 @@ class Relationships implements InputConfiguringInterface
     {
         if (isset($database['type']) && (strpos($database['type'], 'mariadb:') === 0 || strpos($database['type'], 'mysql:') === 0)) {
             list(, $version) = explode(':', $database['type'], 2);
-            return version_compare($version, '10.4', '>=');
+            return version_compare($version, '10.5', '>=');
         }
         return false;
     }
