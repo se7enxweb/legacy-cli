@@ -219,11 +219,23 @@ class Relationships implements InputConfiguringInterface
     }
 
     /**
+     * Returns whether the database is MariaDB.
+     *
+     * @param array $database The database definition from the relationships.
+     * @return bool
+     */
+    public function isMariaDb(array $database)
+    {
+        return isset($database['type']) && (strpos($database['type'], 'mariadb:') === 0 || strpos($database['type'], 'mysql:') === 0);
+    }
+
+    /**
      * Returns command-line arguments to connect to a database.
      *
      * @param string      $command        The command that will need arguments
      *                                    (one of 'psql', 'pg_dump', 'mysql',
-     *                                    or 'mysqldump').
+     *                                    'mysqldump', 'mariadb' or
+     *                                    'mariadb-dump').
      * @param array       $database       The database definition from the
      *                                    relationship.
      * @param string|null $schema         The name of a database schema, or
@@ -256,6 +268,8 @@ class Relationships implements InputConfiguringInterface
 
                 return OsUtil::escapePosixShellArg($url);
 
+            case 'mariadb':
+            case 'mariadb-dump':
             case 'mysql':
             case 'mysqldump':
                 $args = sprintf(
