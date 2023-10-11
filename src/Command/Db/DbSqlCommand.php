@@ -113,7 +113,7 @@ class DbSqlCommand extends CommandBase
                 break;
 
             default:
-                $cmdName = $relationships->isMariaDb($database) ? 'mariadb' : 'mysql';
+                $cmdName = $relationships->supportsMariaDBCommands($database) ? 'mariadb' : 'mysql';
                 $sqlCommand = $cmdName . ' --no-auto-rehash ' . $relationships->getDbCommandArgs($cmdName, $database, $schema);
                 if ($query) {
                     if ($input->getOption('raw')) {

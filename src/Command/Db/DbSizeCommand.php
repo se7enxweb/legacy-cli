@@ -285,7 +285,7 @@ class DbSizeCommand extends CommandBase
     private function getMysqlCommand(array $database) {
         /** @var \Platformsh\Cli\Service\Relationships $relationships */
         $relationships = $this->getService('relationships');
-        $cmdName = $relationships->isMariaDb($database) ? 'mariadb' : 'mysql';
+        $cmdName = $relationships->supportsMariaDBCommands($database) ? 'mariadb' : 'mysql';
         $connectionParams = $relationships->getDbCommandArgs($cmdName, $database, '');
 
         return sprintf(

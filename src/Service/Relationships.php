@@ -219,14 +219,20 @@ class Relationships implements InputConfiguringInterface
     }
 
     /**
-     * Returns whether the database is MariaDB.
+     * Returns whether the database supports MariaDB command names (added in MariaDB 10.4).
+     *
+     * See: https://jira.mariadb.org/browse/MDEV-21303
      *
      * @param array $database The database definition from the relationships.
      * @return bool
      */
-    public function isMariaDb(array $database)
+    public function supportsMariaDBCommands(array $database)
     {
-        return isset($database['type']) && (strpos($database['type'], 'mariadb:') === 0 || strpos($database['type'], 'mysql:') === 0);
+        if (isset($database['type']) && (strpos($database['type'], 'mariadb:') === 0 || strpos($database['type'], 'mysql:') === 0)) {
+            list(, $version) = explode(':', $database['type'], 2);
+            return version_compare($version, '10.4', '>=');
+        }
+        return false;
     }
 
     /**
